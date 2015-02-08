@@ -35,6 +35,7 @@ var HowManyFitProblem = function(x, y)
 	this.minDivision = 2;//The small shape can be at most half of the 
 	this.maxDivision = 10;//It can't be smaller than a tenth of the size of the large shape.
 	this.currentDivision = chooseValueBetween( this.minDivision, this.maxDivision);
+	console.log("CurrentDivision: " + this.currentDivision );
 	
 	
 	this.bigShapeType = "";//What kind of shape the large shape is
@@ -153,7 +154,39 @@ var HowManyFitProblem = function(x, y)
 	
 	}
 	
+	this.answerSet = makeAnswers( this.currentDivision, this.minDivision, this.maxDivision );
+	this.choice1 = this.answerSet[0];
+	this.choice2 = this.answerSet[1];
+	this.choice3 = this.answerSet[2];
+	this.choice4 = this.answerSet[3];
+	this.answer = this.currentDivision;
+	
 	console.log( "Ratio: " + this.targetShape.area / this.comparisonShape.area);
+}
+
+
+var makeAnswers = function( rightAnswer, lowerLimit, upperLimit )
+{
+	var ret = [ 0, 0, 0, 0 ]
+	
+	ret[chooseValueBetween(0, 3)] = rightAnswer;
+	
+	for( var i = 0; i <= 3; i++ ){
+	
+		if(ret[i] === 0){//If it hasn't already been set to the right answer
+
+			var x = chooseValueBetween( lowerLimit, upperLimit );
+			while( x === ret[0] || x === ret[1] || x === ret[2] || x === ret[3] ){
+				x = chooseValueBetween( lowerLimit, upperLimit );//Keep re-rolling until you get a value not already present
+			}
+		
+		}
+	}
+	
+	return ret;
+	
+
+
 }
 
 var chooseValueBetween = function( min, max )//Chooses a random value between the min and the max, inclusive.
@@ -163,6 +196,7 @@ var chooseValueBetween = function( min, max )//Chooses a random value between th
 
 
 }
+
 
 var chooseFloatBetween = function( min, max )//Chooses a random float between the min and the max
 {
