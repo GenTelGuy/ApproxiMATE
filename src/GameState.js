@@ -37,7 +37,7 @@ var GameState = function(w, h)
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
 	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
 	
-	this.currentProblem = this.fitProblem; //used to keep track of the current problem
+	this.currentProblem = this.perimeterProblem; //used to keep track of the current problem
 }
 
 GameState.prototype =
