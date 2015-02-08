@@ -71,7 +71,7 @@ MenuState.prototype =
 		canvas.fillText("ApproxiMATE", engine.w / 2, 80);
 		canvas.font = "30px sans-serif";
 		canvas.fillText("Learning Mode", engine.w / 2, 320);
-		canvas.fillText("Time mode", engine.w / 2, 420);
+		canvas.fillText("Time Mode", engine.w / 2, 420);
 		canvas.strokeRect(this.selectionBoxX, this.selectionBoxY, this.selectionBoxWidth, this.selectionBoxHeight);
     },
 
