@@ -30,12 +30,14 @@ var GameState = function(w, h)
 	this.messageColor = "green"; //default value - changes depending on the right/wrong answer chosen
 	this.selectionBoxX = 0;
 	this.selectionBoxY = 0;
+	this.selectionBoxWidth = 0;
+	this.selectionBoxHeight = 0;
 	
 	this.fitProblem = new HowManyFitProblem(100, 100); //test code
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
 	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
 	
-	this.currentProblem = this.angleProblem; //used to keep track of the current problem
+	this.currentProblem = this.fitProblem; //used to keep track of the current problem
 }
 
 GameState.prototype =
@@ -92,6 +94,31 @@ GameState.prototype =
 				console.log("D pressed");
 				if(!this.isDisplayingMessage){
 					this.currentChoice = 3;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
+				break;
+				
+			case 49: // '1' key
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 1;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
+				break;
+			case 50: // '2' key
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 2;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
+				break;
+			case 51: // '3' key
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 3;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
+				break;
+			case 52: // '4' key
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 4;
 					this.currentProblem.giveAnswer(this.currentChoice);
 				}
 				break;
@@ -159,7 +186,7 @@ GameState.prototype =
 			canvas.fillText(this.message, engine.w / 2, engine.h / 2);
 			//draw the outline highlighting the answer chosen
 			canvas.strokeStyle = this.messageColor;
-			canvas.strokeRect(this.selectionBoxX, this.selectionBoxY, engine.w / 2 - 32, (engine.h - this.currentProblem.crossY) / 2 - 32);
+			canvas.strokeRect(this.selectionBoxX, this.selectionBoxY, this.selectionBoxWidth, this.selectionBoxHeight);
 		}
 		
 		if(this.isQuitting){
