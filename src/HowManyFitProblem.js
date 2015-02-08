@@ -117,16 +117,16 @@ var HowManyFitProblem = function(x, y)
 		
 			if(this.bigShapeType === "Rectangle"){
 				//this part of the code may be incorrect
-				this.currentDivision /= Math.pow(2, 0.5);//Because A = 1/2BH, it will take twice as many triangles to reach the same area by the old formula
+				//this.currentDivision /= Math.pow(2, 0.5);//Because A = 1/2BH, it will take twice as many triangles to reach the same area by the old formula
 				
 				this.smallWidthFactor = chooseFloatBetween(1, Math.pow( this.currentDivision, 0.5));
 				this.smallHeightFactor = this.currentDivision / this.smallWidthFactor;
 				
 				
-				this.smallWidth =  this.widthValue / this.smallWidthFactor;
+				this.smallWidth =  2 * this.widthValue / this.smallWidthFactor;
 				this.smallHeight = this.heightValue / this.smallHeightFactor;
 				
-				this.comparisonShape = new Triangle(this.smallWidth, this.smallHeight * Math.pow(2, 0.5), this.leftBoxCenterX, this.leftBoxCenterY);
+				this.comparisonShape = new Triangle(this.smallWidth, this.smallHeight, this.leftBoxCenterX, this.leftBoxCenterY);
 			
 			}
 			

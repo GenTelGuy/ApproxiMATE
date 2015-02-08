@@ -13,7 +13,7 @@ var TimeModeState = function(w, h)
 	
 	this.currentChoice = 1; //integers are used to represent the choices for each problem
 	
-	this.gameTimer = 3000; //the initial number of milliseconds
+	this.gameTimer = 10000; //the initial number of milliseconds
 	this.scoreTimer = 0;
 	
 	this.isScreenShaking = false; //set this to true any time a screen shake should occur 
