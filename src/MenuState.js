@@ -8,7 +8,7 @@ var MenuState = function(w, h)
 	this.testProblem = new ExampleProblem(250, 250); //test code
 	this.fitProblem = new HowManyFitProblem(100, 100);
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
-	this.perimeterProblem = new MatchPerimeterProblem(640, 480);
+	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
 	
 	//we may need a current-screen system where the MenuState.js file handles all different states
 }

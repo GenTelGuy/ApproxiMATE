@@ -5,7 +5,15 @@ var GameState = function(w, h)
 	
     this.running = true;
 	
-	this.isScreenShaking = true; //set this to true any time a screen shake should occur 
+	this.numRight = 0; //the number of problems answered correctly
+	this.numRightX = 0; //the coordinates of the number right
+	this.numRightY = 0;
+	
+	this.numWrong = 0; //the number of problems answered incorrectly
+	this.numWrongX = 0; //the coordinates of the number wrong
+	this.numWrongY = 0;
+	
+	this.isScreenShaking = false; //set this to true any time a screen shake should occur 
 	this.isScreenShakingEnd = false;
 	this.screenShakeTimer = 0;
 	this.shakeMagnitude = 12; //how far away the camera shakes around its original point, in pixels
@@ -94,5 +102,6 @@ GameState.prototype =
 	
         canvas.clearRect(0, 0, this.w, this.h);
         //all drawing should happen after canvas is cleared
+		canvas.fillText("test", 0, 0); //TODO gamestate drawing isn't working
     }
 }
