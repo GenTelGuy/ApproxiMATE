@@ -35,7 +35,7 @@ var GameState = function(w, h)
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
 	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
 	
-	this.currentProblem = this.angleProblem; //used to keep track of the current problem
+	this.currentProblem = this.fitProblem; //used to keep track of the current problem
 }
 
 GameState.prototype =
@@ -92,6 +92,31 @@ GameState.prototype =
 				console.log("D pressed");
 				if(!this.isDisplayingMessage){
 					this.currentChoice = 3;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
+				break;
+				
+			case 49: // '1' key
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 1;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
+				break;
+			case 50: // '2' key
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 2;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
+				break;
+			case 51: // '3' key
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 3;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
+				break;
+			case 52: // '4' key
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 4;
 					this.currentProblem.giveAnswer(this.currentChoice);
 				}
 				break;
