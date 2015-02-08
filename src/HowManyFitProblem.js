@@ -231,7 +231,7 @@ HowManyFitProblem.prototype =
 				engine.activeState.gameTimer += this.timeBonus;
 				console.log("After: " + engine.activeState.gameTimer);
 			}
-			engine.activeState.message = "You got the right answer";
+			engine.activeState.message = "Correct!";
 			engine.activeState.messageColor = "green";
 			engine.activeState.correctSound.play();
 		}
@@ -242,11 +242,13 @@ HowManyFitProblem.prototype =
 			else if(engine.activeState.gameTimer != null){ //this means we're in time mode
 				engine.activeState.gameTimer -= this.timePenalty;
 			}
-			engine.activeState.message = "You got the wrong answer";
+			engine.activeState.message = "Incorrect!";
 			engine.activeState.messageColor = "red";
 			engine.activeState.incorrectSound.play();
 			engine.activeState.isScreenShaking = true;
 		}
+		engine.activeState.messageX = engine.w / 2;
+		engine.activeState.messageY = this.crossY;
 		engine.activeState.isDisplayingMessage = true;
 	}
 }

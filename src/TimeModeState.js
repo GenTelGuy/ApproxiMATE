@@ -27,6 +27,8 @@ var TimeModeState = function(w, h)
 	this.displayMessageTimer = 0;
 	this.message = "";
 	this.messageColor = "green"; //default value - changes depending on the right/wrong answer chosen
+	this.messageX = 0;
+	this.messageY = 0;
 	this.selectionBoxX = 0;
 	this.selectionBoxY = 0;
 	this.selectionBoxWidth = 0;
@@ -70,7 +72,7 @@ TimeModeState.prototype =
 				this.currentProblem = new IdentifyAngleProblem(0, 0);
             }
         }
-		if(this.gameTimer > 0 && !this.isDisplayingMessage && !this.isQuitting){
+		if(this.gameTimer > 0 && !this.isDisplayingMessage && !this.isQuitting && !this.gameOver){
 			this.gameTimer -= dt;
 			this.scoreTimer += dt;
 		}
@@ -85,37 +87,31 @@ TimeModeState.prototype =
     {
         switch(keyCode){				
 			case 49: // '1' key
-				if(!this.isDisplayingMessage){
+				if(!this.isDisplayingMessage && !this.gameOver){
 					this.currentChoice = 1;
 					console.log("Chose option 1");
 					this.currentProblem.giveAnswer(this.currentChoice);
 				}
 				break;
 			case 50: // '2' key
-				if(!this.isDisplayingMessage){
+				if(!this.isDisplayingMessage && !this.gameOver){
 					this.currentChoice = 2;
 					this.currentProblem.giveAnswer(this.currentChoice);
 				}
 				break;
 			case 51: // '3' key
-				if(!this.isDisplayingMessage){
+				if(!this.isDisplayingMessage && !this.gameOver){
 					this.currentChoice = 3;
 					this.currentProblem.giveAnswer(this.currentChoice);
 				}
 				break;
 			case 52: // '4' key
-				if(!this.isDisplayingMessage){
+				if(!this.isDisplayingMessage && !this.gameOver){
 					this.currentChoice = 4;
 					this.currentProblem.giveAnswer(this.currentChoice);
 				}
 				break;
 				
-			case 38: // Up arrow
-				console.log("Up pressed");
-				break;
-			case 40: // Down arrow
-				console.log("Down pressed");
-				break;
 			case 27: // Escape key
 				if(!this.gameOver){ //prompt the user for quitting
 					this.isQuitting = !this.isQuitting;
@@ -179,7 +175,7 @@ TimeModeState.prototype =
 		
 		//Displaying message after response is chosen
 		if(this.isDisplayingMessage){
-			canvas.fillText(this.message, engine.w / 2, engine.h / 2);
+			canvas.fillText(this.message, this.messageX, this.messageY);
 			//draw the outline highlighting the answer chosen
 			canvas.strokeStyle = this.messageColor;
 			canvas.strokeRect(this.selectionBoxX, this.selectionBoxY, this.selectionBoxWidth, this.selectionBoxHeight);
@@ -194,7 +190,7 @@ TimeModeState.prototype =
 		
 		if(this.gameOver){
 			canvas.clearRect(0, 0, this.w, this.h);
-			canvas.fillText("Time's up! You lasted for " + Math.round(this.scoreTimer / 1000) + " seconds!", engine.w / 2, engine.h / 2 - 96);
+			canvas.fillText("Time's up! You lasted for " + Math.round(this.scoreTimer / 1000) + " second(s)!", engine.w / 2, engine.h / 2 - 96);
 			canvas.fillText("Do you want to try again?", engine.w / 2, engine.h / 2 - 68);
 			canvas.fillText("Press Enter to try again", engine.w / 2, engine.h - 228);
 			canvas.fillText("Press Esc to quit", engine.w / 2, engine.h - 164);

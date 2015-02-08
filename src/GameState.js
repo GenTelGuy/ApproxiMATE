@@ -31,6 +31,8 @@ var GameState = function(w, h)
 	this.displayMessageTimer = 0;
 	this.message = "";
 	this.messageColor = "green"; //default value - changes depending on the right/wrong answer chosen
+	this.messageX = 0;
+	this.messageY = 0;
 	this.selectionBoxX = 0;
 	this.selectionBoxY = 0;
 	this.selectionBoxWidth = 0;
@@ -78,29 +80,7 @@ GameState.prototype =
 
     keyPress: function(keyCode)
     {
-        switch(keyCode){
-            case 87: // 'w'
-				console.log("W pressed");
-				if(!this.isDisplayingMessage){
-					this.currentChoice = 1;
-					this.currentProblem.giveAnswer(this.currentChoice);
-				}
-                break;
-            case 83: // 's'
-                console.log("S pressed");
-				if(!this.isDisplayingMessage){
-					this.currentChoice = 2;
-					this.currentProblem.giveAnswer(this.currentChoice);
-				}
-                break;
-			case 68: // 'd'
-				console.log("D pressed");
-				if(!this.isDisplayingMessage){
-					this.currentChoice = 3;
-					this.currentProblem.giveAnswer(this.currentChoice);
-				}
-				break;
-				
+        switch(keyCode){				
 			case 49: // '1' key
 				if(!this.isDisplayingMessage){
 					this.currentChoice = 1;
@@ -126,12 +106,6 @@ GameState.prototype =
 				}
 				break;
 				
-			case 38: // Up arrow
-				console.log("Up pressed");
-				break;
-			case 40: // Down arrow
-				console.log("Down pressed");
-				break;
 			case 27: // Escape key
 				if(!this.isDisplayingMessage){
 					this.isQuitting = !this.isQuitting;
@@ -188,7 +162,7 @@ GameState.prototype =
 		
 		//Displaying message after response is chosen
 		if(this.isDisplayingMessage){
-			canvas.fillText(this.message, engine.w / 2, engine.h / 2);
+			canvas.fillText(this.message, this.messageX, this.messageY);
 			//draw the outline highlighting the answer chosen
 			canvas.strokeStyle = this.messageColor;
 			canvas.strokeRect(this.selectionBoxX, this.selectionBoxY, this.selectionBoxWidth, this.selectionBoxHeight);
