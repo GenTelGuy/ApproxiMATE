@@ -4,6 +4,18 @@ var HowManyFitProblem = function(x, y)
 {	
     this.x = x;
 	this.y = y;
+
+	this.minBigWidth = 160;
+	this.maxBigHeight = 150;//The dimension limits for the large shape. 
+
+	
+	this.maxBigWidth = 320;
+	this.maxBigHeight = 300;
+	
+	
+	
+	this.minDivision = 2;//The small shape can be at most half of the size of the large shape
+	this.maxDivision = 10;//It can't be smaller than a tenth of the size of the large shape.
 }
 
 HowManyFitProblem.prototype =
