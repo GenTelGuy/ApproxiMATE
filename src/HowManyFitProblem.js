@@ -159,7 +159,7 @@ var HowManyFitProblem = function(x, y)
 	this.choice2 = this.answerSet[1];
 	this.choice3 = this.answerSet[2];
 	this.choice4 = this.answerSet[3];
-	/*if(this.choice1 === this.currentDivision){
+	if(this.choice1 === this.currentDivision){
 		this.answer = this.choice1;
 	}
 	else if(this.choice2 === this.currentDivision){
@@ -170,7 +170,7 @@ var HowManyFitProblem = function(x, y)
 	}
 	else if(this.choice4 === this.currentDivision){
 		this.answer = this.choice4;
-	}*/
+	}
 	//this.answer = this.currentDivision;
 	
 	console.log( "Ratio: " + this.targetShape.area / this.comparisonShape.area);
