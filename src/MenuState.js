@@ -18,7 +18,14 @@ MenuState.prototype =
 
 	keyPress: function( keyCode)
 	{
-		
+		switch(keyCode){				
+			case 38: // Up arrow
+				console.log("Up pressed");
+				break;
+			case 40: // Down arrow
+				console.log("Down pressed");
+				break;
+		}
 	},
 
     /*giveResources: function(resources)
@@ -36,6 +43,7 @@ MenuState.prototype =
     draw: function(canvas)
     {
         canvas.clearRect(0, 0, this.w, this.h);
+		canvas.fillText("This is the main menu", 320, 240);
     },
 
 }

@@ -5,6 +5,8 @@ var GameState = function(w, h)
 	
     this.running = true;
 	
+	this.isQuitting = false;
+	
 	this.numRight = 0; //the number of problems answered correctly
 	this.numRightX = 0; //the coordinates of the number right
 	this.numRightY = 0;
@@ -55,6 +57,9 @@ GameState.prototype =
             case 83: // 's'
                 console.log("S pressed");
                 break;
+			case 68: // 'd'
+				console.log("D pressed");
+				break;
 				
 			case 38: // Up arrow
 				console.log("Up pressed");
@@ -62,8 +67,14 @@ GameState.prototype =
 			case 40: // Down arrow
 				console.log("Down pressed");
 				break;
-			case 27: //Escape key
+			case 27: // Escape key
+				this.isQuitting = !this.isQuitting;
 				console.log("Esc pressed");
+				break;
+			case 13: // Enter key
+				if(this.isQuitting){
+					engine.activeState = engine.menuState;
+				}
 				break;
 		}
 	},
@@ -104,5 +115,9 @@ GameState.prototype =
 		//this.fitProblem.draw(canvas); //test code
 		this.angleProblem.draw(canvas);
 		//this.perimeterProblem.draw(canvas);
+		
+		if(this.isQuitting){
+			canvas.fillText("Are you sure you\nwant to quit?", engine.w / 2, engine.h / 2);
+		}
     }
 }
