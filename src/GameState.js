@@ -195,7 +195,10 @@ GameState.prototype =
 		}
 		
 		if(this.isQuitting){
-			canvas.fillText("Are you sure you want to quit?", engine.w / 2, engine.h / 2);
+			canvas.clearRect(0, 0, this.w, this.h);
+			canvas.fillText("Are you sure you want to quit?", engine.w / 2, engine.h / 2 - 64);
+			canvas.fillText("Press Enter to confirm", engine.w / 2, engine.h / 2);
+			canvas.fillText("Press Esc again to cancel", engine.w / 2, engine.h / 2 + 64);
 		}
     }
 }

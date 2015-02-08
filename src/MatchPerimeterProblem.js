@@ -15,6 +15,9 @@ var MatchPerimeterProblem = function(x, y)
 	
 	this.userChoice = 0;
 	
+	this.timeBonus = 3000; //how many milliseconds are added to the timer for time mode
+	this.timePenalty = 1000; //how many milliseconds are lost when answering incorrectly for time mode
+	
 	this.targetPerimeter = 1; //this should be generated
 }
 
@@ -46,39 +49,49 @@ MatchPerimeterProblem.prototype =
 	giveAnswer: function(answer){ //handles the selection and score tracking progression of the user
 		if(answer === 1){
 			this.userChoice = this.choice1;
-			engine.gameState.selectionBoxX = 10;
-			engine.gameState.selectionBoxY = this.crossY + 10;
+			engine.activeState.selectionBoxX = 10;
+			engine.activeState.selectionBoxY = this.crossY + 10;
 		}
 		else if(answer == 2){
 			this.userChoice = this.choice2;
-			engine.gameState.selectionBoxX = 10;
-			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
+			engine.activeState.selectionBoxX = 10;
+			engine.activeState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
 		}
 		else if(answer === 3){
 			this.userChoice = this.choice3;
-			engine.gameState.selectionBoxX = engine.w / 2 + 10;
-			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
+			engine.activeState.selectionBoxX = engine.w / 2 + 10;
+			engine.activeState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
 		}
 		else if(answer === 4){
 			return; //perimeter match problems do not have a 4th option
 		}
-		engine.gameState.selectionBoxWidth = engine.w / 2 - 32;
-		engine.gameState.selectionBoxHeight = (engine.h - engine.gameState.currentProblem.crossY) / 2 - 32;
+		engine.activeState.selectionBoxWidth = engine.w / 2 - 32;
+		engine.activeState.selectionBoxHeight = (engine.h - engine.activeState.currentProblem.crossY) / 2 - 32;
 		if(this.userChoice !== 0){
 			if(this.userChoice === this.targetPerimeter){
-				engine.gameState.numRight++;
-				engine.gameState.message = "You got the right answer";
-				engine.gameState.messageColor = "green";
-				engine.gameState.correctSound.play();
+				if(engine.activeState.numRight != null){ //this means we're in learning mode
+					engine.activeState.numRight++;
+				}
+				else if(engine.activeState.gameTimer != null){ //this means we're in time mode
+					engine.activeState.gameTimer += timeBonus;
+				}
+				engine.activeState.message = "You got the right answer";
+				engine.activeState.messageColor = "green";
+				engine.activeState.correctSound.play();
 			}
 			else{
-				engine.gameState.numWrong++;
-				engine.gameState.message = "You got the wrong answer";
-				engine.gameState.messageColor = "red";
-				engine.gameState.incorrectSound.play();
-				engine.gameState.isScreenShaking = true;
+				if(engine.activeState.numWrong != null){ //this means we're in learning mode
+					engine.activeState.numWrong++;
+				}
+				else if(engine.activeState.gameTimer != null){ //this means we're in time mode
+					engine.activeState.gameTimer -= this.timePenalty;
+				}
+				engine.activeState.message = "You got the wrong answer";
+				engine.activeState.messageColor = "red";
+				engine.activeState.incorrectSound.play();
+				engine.activeState.isScreenShaking = true;
 			}
 		}
-		engine.gameState.isDisplayingMessage = true;
+		engine.activeState.isDisplayingMessage = true;
 	}
 }

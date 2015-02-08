@@ -41,8 +41,9 @@ MenuState.prototype =
 					engine.gameState = new GameState(this.w, this.h);
 					engine.activeState = engine.gameState;
 				}
-				else{
-					engine.gameState.incorrectSound.play();
+				else if(this.selectionBoxY === 380){ //if Time Mode is currently selected, go to time mode
+					engine.timerState = new TimeModeState(this.w, this.h);
+					engine.activeState = engine.timerState;
 				}
 				break;
 		}
@@ -70,7 +71,6 @@ MenuState.prototype =
 		canvas.fillText("ApproxiMATE", engine.w / 2, 80);
 		canvas.font = "30px sans-serif";
 		canvas.fillText("Learning Mode", engine.w / 2, 320);
-		canvas.fillStyle = "grey";
 		canvas.fillText("Time mode", engine.w / 2, 420);
 		canvas.strokeRect(this.selectionBoxX, this.selectionBoxY, this.selectionBoxWidth, this.selectionBoxHeight);
     },
