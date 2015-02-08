@@ -27,6 +27,9 @@ var GameState = function(w, h)
 	this.isDisplayingMessage = false;
 	this.displayMessageTimer = 0;
 	this.message = "";
+	this.messageColor = "green"; //default value - changes depending on the right/wrong answer chosen
+	this.selectionBoxX = 0;
+	this.selectionBoxY = 0;
 	
 	this.fitProblem = new HowManyFitProblem(100, 100); //test code
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
@@ -151,13 +154,16 @@ GameState.prototype =
 			this.currentProblem.draw(canvas);
 		}
 		
-		//Screen shaking effect
+		//Displaying message after response is chosen
 		if(this.isDisplayingMessage){
 			canvas.fillText(this.message, engine.w / 2, engine.h / 2);
+			//draw the outline highlighting the answer chosen
+			canvas.strokeStyle = this.messageColor;
+			canvas.strokeRect(this.selectionBoxX, this.selectionBoxY, engine.w / 2 - 32, (engine.h - this.currentProblem.crossY) / 2 - 32);
 		}
 		
 		if(this.isQuitting){
-			canvas.fillText("Are you sure you\nwant to quit?", engine.w / 2, engine.h / 2);
+			canvas.fillText("Are you sure you want to quit?", engine.w / 2, engine.h / 2);
 		}
     }
 }
