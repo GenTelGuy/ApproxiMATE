@@ -11,7 +11,7 @@ var Engine = function(w, h)
 	
 	this.gameState = new GameState(w, h);
 	this.menuState = new MenuState(w, h);
-    this.activeState = this.menuState;
+    this.activeState = this.gameState; //change later so that it starts on the main menu
 
     //this.loadResources(); //part of the previous method of loading resources - may need to change later on
 }

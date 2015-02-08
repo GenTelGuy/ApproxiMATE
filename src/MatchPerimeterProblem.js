@@ -19,8 +19,12 @@ MatchPerimeterProblem.prototype =
 
     draw: function(canvas)
     {
+		canvas.fillStyle = "black";
+		canvas.font = '24px sans-serif';
+        canvas.textAlign = 'center';
+		canvas.fillText("Match the perimeter!", engine.w / 2, 64);
+	
 		canvas.fillRect(engine.w / 2, this.crossY, 1, engine.h); //vertical line
 		canvas.fillRect(0, (this.crossY + engine.h) / 2, engine.w, 1); //horizontal line
-		canvas.fillText("This is a match-perimeter problem", this.x, this.y);
     }
 }

@@ -5,6 +5,10 @@ var GameState = function(w, h)
 	
     this.running = true;
 	
+	this.isQuitting = false;
+	
+	this.currentChoice = 1; //integers are used to represent the choices for each problem
+	
 	this.numRight = 0; //the number of problems answered correctly
 	this.numRightX = 0; //the coordinates of the number right
 	this.numRightY = 0;
@@ -19,6 +23,12 @@ var GameState = function(w, h)
 	this.shakeMagnitude = 12; //how far away the camera shakes around its original point, in pixels
 	this.transX = 0; //keeps track of the canvas's translation in order to reset it to its original position after screen shaking
 	this.transY = 0;
+	
+	this.fitProblem = new HowManyFitProblem(100, 100); //test code
+	this.angleProblem = new IdentifyAngleProblem(500, 500);
+	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
+	
+	this.currentProblem = null; //used to keep track of the current problem
 }
 
 GameState.prototype =
@@ -47,10 +57,16 @@ GameState.prototype =
         switch(keyCode){
             case 87: // 'w'
 				console.log("W pressed");
+				this.currentChoice = 1;
                 break;
             case 83: // 's'
                 console.log("S pressed");
+				this.currentChoice = 2;
                 break;
+			case 68: // 'd'
+				console.log("D pressed");
+				this.currentChoice = 3;
+				break;
 				
 			case 38: // Up arrow
 				console.log("Up pressed");
@@ -58,23 +74,20 @@ GameState.prototype =
 			case 40: // Down arrow
 				console.log("Down pressed");
 				break;
-			case 27: //Escape key
+			case 27: // Escape key
+				this.isQuitting = !this.isQuitting;
 				console.log("Esc pressed");
+				break;
+			case 13: // Enter key
+				if(this.isQuitting){
+					engine.activeState = engine.menuState;
+				}
+				else{
+					
+				}
 				break;
 		}
 	},
-
-    /*giveResources: function(resources)
-    {
-        this.desertBackground = resources.bgDesert;
-        this.finalDestinationBackground = resources.bgFinalD;
-        this.grottoBackground = resources.bgGrotto;
-		this.peaksBackground = resources.bgPeaks;
-        this.activeBackground = this.desertBackground;
-
-        this.player1.giveResources(resources);
-        this.player2.giveResources(resources);
-    },*/
 
     // Functions for starting and stopping the simulation
     start: function() { this.running = true },
@@ -101,7 +114,20 @@ GameState.prototype =
 		}
 	
         canvas.clearRect(0, 0, this.w, this.h);
-        //all drawing should happen after canvas is cleared
-		canvas.fillText("test", 0, 0); //TODO gamestate drawing isn't working
+		
+		canvas.font = "24px sans-serif";
+        canvas.textAlign = "center";
+		canvas.fillStyle = "red";
+		canvas.fillText(this.numWrong, engine.w - 64, 64);
+		canvas.fillStyle = "green";
+		canvas.fillText(this.numRight, 64, 64);
+		
+		//this.fitProblem.draw(canvas); //test code
+		this.angleProblem.draw(canvas);
+		//this.perimeterProblem.draw(canvas);
+		
+		if(this.isQuitting){
+			canvas.fillText("Are you sure you\nwant to quit?", engine.w / 2, engine.h / 2);
+		}
     }
 }
