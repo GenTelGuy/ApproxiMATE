@@ -7,6 +7,8 @@ var GameState = function(w, h)
 	
 	this.isQuitting = false;
 	
+	this.currentChoice = 1; //integers are used to represent the choices for each problem
+	
 	this.numRight = 0; //the number of problems answered correctly
 	this.numRightX = 0; //the coordinates of the number right
 	this.numRightY = 0;
@@ -25,6 +27,8 @@ var GameState = function(w, h)
 	this.fitProblem = new HowManyFitProblem(100, 100); //test code
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
 	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
+	
+	this.currentProblem = null; //used to keep track of the current problem
 }
 
 GameState.prototype =
@@ -53,12 +57,15 @@ GameState.prototype =
         switch(keyCode){
             case 87: // 'w'
 				console.log("W pressed");
+				this.currentChoice = 1;
                 break;
             case 83: // 's'
                 console.log("S pressed");
+				this.currentChoice = 2;
                 break;
 			case 68: // 'd'
 				console.log("D pressed");
+				this.currentChoice = 3;
 				break;
 				
 			case 38: // Up arrow
@@ -74,6 +81,9 @@ GameState.prototype =
 			case 13: // Enter key
 				if(this.isQuitting){
 					engine.activeState = engine.menuState;
+				}
+				else{
+					
 				}
 				break;
 		}
