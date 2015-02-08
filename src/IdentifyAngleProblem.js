@@ -120,6 +120,9 @@ IdentifyAngleProblem.prototype =
 		canvas.fillText(this.choice1, leftX, upY);
 		canvas.fillText(this.choice2, leftX, downY);
 		canvas.fillText(this.choice3, rightX, downY);
+		canvas.fillText("#1", engine.w / 2 - 38, (engine.h - this.crossY) / 2 + this.crossY - 28);
+		canvas.fillText("#2", engine.w / 2 - 38, (engine.h - this.crossY) / 2 + this.crossY + 36);
+		canvas.fillText("#3", engine.w / 2 + 32, (engine.h - this.crossY) / 2 + this.crossY + 36);
     },
 	
 	//Utility function so that the angle can be generated at any time by calling this function.

@@ -37,6 +37,10 @@ MatchPerimeterProblem.prototype =
 	
 		canvas.fillRect(engine.w / 2, this.crossY, 1, engine.h); //vertical line
 		canvas.fillRect(0, (this.crossY + engine.h) / 2, engine.w, 1); //horizontal line
+		
+		canvas.fillText("#1", engine.w / 2 - 38, (engine.h - this.crossY) / 2 + this.crossY - 28);
+		canvas.fillText("#2", engine.w / 2 - 38, (engine.h - this.crossY) / 2 + this.crossY + 36);
+		canvas.fillText("#3", engine.w / 2 + 32, (engine.h - this.crossY) / 2 + this.crossY + 36);
     },
 	
 	giveAnswer: function(answer){ //handles the selection and score tracking progression of the user

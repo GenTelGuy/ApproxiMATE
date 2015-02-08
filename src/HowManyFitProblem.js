@@ -49,6 +49,11 @@ HowManyFitProblem.prototype =
 		canvas.fillRect(0, engine.h - 1, engine.w, 1);
 		canvas.fillRect(0, this.crossY, engine.w, 1);
 		canvas.fillRect(0, engine.h - this.bottomCrossY, engine.w, 1); //horizontal line
+		
+		canvas.fillText("#1", 24, engine.h - this.bottomCrossY + 28);
+		canvas.fillText("#2", 24 + (engine.w / 4), engine.h - this.bottomCrossY + 28);
+		canvas.fillText("#3", 24 + (engine.w / 4) * 2, engine.h - this.bottomCrossY + 28);
+		canvas.fillText("#4", 24 + (engine.w / 4) * 3, engine.h - this.bottomCrossY + 28);
     },
 	
 	giveAnswer: function(answer){ //handles the selection and score tracking progression of the user
