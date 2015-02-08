@@ -5,8 +5,11 @@ var IdentifyAngleProblem = function(x, y)
     this.x = x;
 	this.y = y;
 	
-	this.minimumAngle = 1;//One degree is the minimum that the angle can be
-	this.maximumAngle = 359;//One less than 360 degrees. It is likely that these numbers need adjustment.
+	this.minimumAngle = 16;//One degree is the minimum that the angle can be
+	this.maximumAngle = 344;//One less than 360 degrees. It is likely that these numbers need adjustment.
+	
+	this.minimumDifference = 15; //There can be a minimum of 15 degrees between two angles
+	this.maximumDifference = 90; //There can be a maximum of 90 degrees between two angles 
 	
 	this.targetAngle = Math.floor(Math.random() * (this.maximum-this.minimum) + this.minimum);
 	//This line sets the angle that the user tries to identify
@@ -22,6 +25,8 @@ var IdentifyAngleProblem = function(x, y)
 			this.choice1 = this.targetAngle;
 			
 			//Set the other two answers to other, incorrect angles
+			this.choice2 = generateWrongAnswer( targetAngle );
+			this.choice3 = generateWrongAnswer( targetAngle, choice2 );
 			
 			
 			break;
@@ -31,6 +36,9 @@ var IdentifyAngleProblem = function(x, y)
 			this.choice2 = this.targetAngle;
 			
 			//Set the other two answers to other, incorrect angles
+			
+			this.choice1 = generateWrongAnswer( targetAngle );
+			this.choice3 = generateWrongAnswer( targetAngle, choice1 );
 		
 		
 			break;
@@ -42,6 +50,8 @@ var IdentifyAngleProblem = function(x, y)
 			//Set the other two answers to other, incorrect angles
 			
 			
+			this.choice1 = generateWrongAnswer( targetAngle );
+			this.choice2 = generateWrongAnswer( targetAngle, choice1 );
 			
 			break;
 			
@@ -50,7 +60,7 @@ var IdentifyAngleProblem = function(x, y)
 }
 
 
-var generateWrongAnswer = function( correctAnswer, minimumDifference, maximumDifference, min, max ) //Minimum difference is the minimum difference between the correct angle and an incorrect angle.
+var generateWrongAnswer = function( correctAnswer ) //Minimum difference is the minimum difference between the correct angle and an incorrect angle.
 {
 
 	switch( chooseValueBetween(1, 2) ){
@@ -58,16 +68,16 @@ var generateWrongAnswer = function( correctAnswer, minimumDifference, maximumDif
 		case 1://Go low
 		
 		
-			this.ret = chooseValueBetween( correctAnswer - maximumDifference, correctAnswer - minimumDifference ) ;
+			this.ret = chooseValueBetween( correctAnswer - this.maximumDifference, correctAnswer - this.minimumDifference ) ;
 			
-			if(this.ret > max){
+			if(this.ret > this.max){
 			
-			this.ret = max;
+			this.ret = this.max;
 			}
 			
-			if(this.ret < min) {
+			if(this.ret < this.min) {
 			
-			this.ret = min
+			this.ret = this.min
 			};
 			
 			return this.ret;
@@ -77,15 +87,15 @@ var generateWrongAnswer = function( correctAnswer, minimumDifference, maximumDif
 		
 		case 2://Go high 
 		
-			this.ret =  chooseValueBetween( correctAnswer + minimumDifference, correctAnswer + maximumDifference ) ;
-			if(this.ret > max){//Make sure you don't go too high or too low
+			this.ret =  chooseValueBetween( correctAnswer + this.minimumDifference, correctAnswer + this.maximumDifference ) ;
+			if(this.ret > this.max){//Make sure you don't go too high or too low
 			
-				this.ret = max;
+				this.ret = this.max;
 			}
 			
-			if(this.ret < min) {//^^
+			if(this.ret < this.min) {//^^
 			
-				this.ret = min
+				this.ret = this.min
 			};
 		
 			return this.ret;
@@ -101,11 +111,18 @@ var generateWrongAnswer = function( correctAnswer, minimumDifference, maximumDif
 
 }
 
-var generateWrongAnswer = function( correctAnswer, minimumDifference, maximumDifference, min, max, alreadyUsedWrongAnswer ) //Overloaded function, avoids two of the wrong answers being the same
+var generateWrongAnswer = function( correctAnswer, alreadyUsedWrongAnswer ) //Overloaded function, avoids two of the wrong answers being the same
 {
 
+	this.ret = generateWrongAnswer( correctAnswer );
+	
+	while( Math.abs(this.ret - alreadyUsedWrongAnswer) < minimumDifference ){//If the first generated value was too close to the other answer, try again until it is acceptable.
+	
+		this.ret = generateWrongAnswer( correctAnswer );
+	
+	}
 
-
+	return this.ret;
 
 }
 
