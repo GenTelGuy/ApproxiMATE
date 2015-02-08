@@ -5,7 +5,6 @@ var IdentifyAngleProblem = function(x, y)
     this.x = x;
 	this.y = y;
 	
-	
 	this.theta = Math.floor((Math.random() * 360) + 1); 
 	this.length = 76; //the length of the rays that make up the angle
 	
@@ -23,6 +22,8 @@ var IdentifyAngleProblem = function(x, y)
 	this.choice1 = 0;
 	this.choice2 = 0;
 	this.choice3 = 0;
+	
+	this.userChoice = 0;
 	
 	console.log(this.theta + "    " + this.targetAngle);
 	
@@ -84,7 +85,7 @@ IdentifyAngleProblem.prototype =
 {
     update: function(dt)
     {	
-        
+		
     },
 
     draw: function(canvas)
@@ -100,6 +101,7 @@ IdentifyAngleProblem.prototype =
     
 		
 		//draws the generated angle
+		canvas.strokeStyle = "black";
 		var angleX = (engine.w / 2) + (this.length + 12);
 		var angleY = (this.crossY + engine.h) / 2 - (this.length + 12);
 		canvas.beginPath();
@@ -189,5 +191,34 @@ IdentifyAngleProblem.prototype =
 
 		return this.ret;
 		
+	},
+	
+	giveAnswer: function(answer){ //handles the selection and score tracking progression of the user
+		if(answer === 1){
+			this.userChoice = this.choice1;
+			engine.gameState.selectionBoxX = 10;
+			engine.gameState.selectionBoxY = this.crossY + 10;
+		}
+		else if(answer == 2){
+			this.userChoice = this.choice2;
+			engine.gameState.selectionBoxX = 10;
+			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
+		}
+		else if(answer === 3){
+			this.userChoice = this.choice3;
+			engine.gameState.selectionBoxX = engine.w / 2 + 10;
+			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
+		}
+		if(this.userChoice === this.targetAngle){
+			engine.gameState.numRight++;
+			engine.gameState.message = "You got the right answer";
+			engine.gameState.messageColor = "green";
+		}
+		else{
+			engine.gameState.numWrong++;
+			engine.gameState.message = "You got the wrong answer";
+			engine.gameState.messageColor = "red";
+		}
+		engine.gameState.isDisplayingMessage = true;
 	}
 }
