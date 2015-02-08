@@ -1,4 +1,4 @@
-var GameState = function(w, h)
+var TimeModeState = function(w, h)
 {
     this.w = w || 0;
     this.h = h || 0;
@@ -6,19 +6,14 @@ var GameState = function(w, h)
     this.running = true;
 	
 	this.isQuitting = false;
+	this.gameOver = false;
 	
 	this.correctSound = new Audio("./res/RightAnswerSound.wav");
 	this.incorrectSound = new Audio("./res/WrongAnswerSound.wav");
 	
 	this.currentChoice = 1; //integers are used to represent the choices for each problem
 	
-	this.numRight = 0; //the number of problems answered correctly
-	this.numRightX = 0; //the coordinates of the number right
-	this.numRightY = 0;
-	
-	this.numWrong = 0; //the number of problems answered incorrectly
-	this.numWrongX = 0; //the coordinates of the number wrong
-	this.numWrongY = 0;
+	this.gameTimer = 3000; //the initial number of milliseconds
 	
 	this.isScreenShaking = false; //set this to true any time a screen shake should occur 
 	this.isScreenShakingEnd = false;
@@ -43,7 +38,7 @@ var GameState = function(w, h)
 	this.currentProblem = this.fitProblem; //used to keep track of the current problem
 }
 
-GameState.prototype =
+TimeModeState.prototype =
 {	
     init: function()
     {
@@ -66,14 +61,18 @@ GameState.prototype =
 		//code for displaying message after every choice made
         if(this.isDisplayingMessage){
             this.displayMessageTimer += dt;
-            if(this.displayMessageTimer >= 2000){ //how many milliseconds the message lasts
+            if(this.displayMessageTimer >= 250){ //how many milliseconds the message lasts
                 this.displayMessageTimer = 0;
                 this.isDisplayingMessage = false;
 				console.log("Stopped displaying message");
-				//create a new problem for the user to solve
+				//create a new problem for the user to solve - randomize later
 				this.currentProblem = new IdentifyAngleProblem(0, 0);
             }
         }
+		this.gameTimer -= dt;
+		if(this.gameTimer <= 0){
+			this.gameOver = true;
+		}
     },
 
     keyPress: function(keyCode)
@@ -133,11 +132,19 @@ GameState.prototype =
 				console.log("Down pressed");
 				break;
 			case 27: // Escape key
-				this.isQuitting = !this.isQuitting;
+				if(!this.gameOver){
+					this.isQuitting = !this.isQuitting;
+				}
 				console.log("Esc pressed");
 				break;
 			case 13: // Enter key
-				if(this.isQuitting){
+				if(this.isQuitting){ //go back to main menu
+					engine.activeState = engine.menuState;
+				}
+				if(this.gameOver){
+					//reset game
+				}
+				else{ //go back to main menu
 					engine.activeState = engine.menuState;
 				}
 				break;
@@ -176,6 +183,7 @@ GameState.prototype =
 		canvas.fillText("Incorrect: " + this.numWrong, engine.w - 64, 64);
 		canvas.fillStyle = "green";
 		canvas.fillText("Correct: " + this.numRight, 64, 64);
+		canvas.fillText("Time remaining: " + (this.gameTimer / 1000), engine.w / 2, engine.h - 64);
 		
 		//this.fitProblem.draw(canvas); //test code
 		//this.angleProblem.draw(canvas);
@@ -194,6 +202,12 @@ GameState.prototype =
 		
 		if(this.isQuitting){
 			canvas.fillText("Are you sure you want to quit?", engine.w / 2, engine.h / 2);
+		}
+		
+		if(this.gameOver){
+			canvas.fillText("Do you want to try again?", engine.w / 2, engine.h / 2 - 96);
+			canvas.fillText("Press Enter to try again", engine.w / 2, engine.h - 128);
+			canvas.fillText("Press Esc to quit", engine.w / 2, engine.h - 64);
 		}
     }
 }

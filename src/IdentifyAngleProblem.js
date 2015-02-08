@@ -226,6 +226,7 @@ IdentifyAngleProblem.prototype =
 				engine.gameState.message = "You got the wrong answer";
 				engine.gameState.messageColor = "red";
 				engine.gameState.incorrectSound.play();
+				engine.gameState.isScreenShaking = true;
 			}
 		}
 		engine.gameState.isDisplayingMessage = true;
