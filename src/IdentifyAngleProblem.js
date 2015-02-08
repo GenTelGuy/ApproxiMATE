@@ -8,6 +8,9 @@ var IdentifyAngleProblem = function(x, y)
 	this.theta = Math.floor((Math.random() * 360) + 1); 
 	this.length = 76; //the length of the rays that make up the angle
 	
+	this.timeBonus = 3000; //how many milliseconds are added to the timer for time mode
+	this.timePenalty = 1000; //how many milliseconds are lost when answering incorrectly for time mode
+	
 	this.crossY = 128; //the top y-position of the cross drawn
 	this.minimumAngle = 16;//One degree is the minimum that the angle can be
 	this.maximumAngle = 344;//One less than 360 degrees. It is likely that these numbers need adjustment.
@@ -117,9 +120,12 @@ IdentifyAngleProblem.prototype =
 		var rightX = (engine.w / 4) * 3;
 		var upY = this.crossY + (engine.h - this.crossY) / 4;
 		var downY = this.crossY + (engine.h - this.crossY) / 4 * 3;
-		canvas.fillText(this.choice1, leftX, upY);
-		canvas.fillText(this.choice2, leftX, downY);
-		canvas.fillText(this.choice3, rightX, downY);
+		canvas.fillText(this.choice1 + "\xB0", leftX, upY);
+		canvas.fillText(this.choice2 + "\xB0", leftX, downY);
+		canvas.fillText(this.choice3 + "\xB0", rightX, downY);
+		canvas.fillText("#1", engine.w / 2 - 38, (engine.h - this.crossY) / 2 + this.crossY - 28);
+		canvas.fillText("#2", engine.w / 2 - 38, (engine.h - this.crossY) / 2 + this.crossY + 36);
+		canvas.fillText("#3", engine.w / 2 + 32, (engine.h - this.crossY) / 2 + this.crossY + 36);
     },
 	
 	//Utility function so that the angle can be generated at any time by calling this function.
@@ -196,38 +202,49 @@ IdentifyAngleProblem.prototype =
 	giveAnswer: function(answer){ //handles the selection and score tracking progression of the user
 		if(answer === 1){
 			this.userChoice = this.choice1;
-			engine.gameState.selectionBoxX = 10;
-			engine.gameState.selectionBoxY = this.crossY + 10;
+			engine.activeState.selectionBoxX = 10;
+			engine.activeState.selectionBoxY = this.crossY + 10;
 		}
 		else if(answer == 2){
 			this.userChoice = this.choice2;
-			engine.gameState.selectionBoxX = 10;
-			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
+			engine.activeState.selectionBoxX = 10;
+			engine.activeState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
 		}
 		else if(answer === 3){
 			this.userChoice = this.choice3;
-			engine.gameState.selectionBoxX = engine.w / 2 + 10;
-			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
+			engine.activeState.selectionBoxX = engine.w / 2 + 10;
+			engine.activeState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
 		}
 		else if(answer === 4){
 			return; //identify angle problems do not have a 4th option
 		}
-		engine.gameState.selectionBoxWidth = engine.w / 2 - 32;
-		engine.gameState.selectionBoxHeight = (engine.h - engine.gameState.currentProblem.crossY) / 2 - 32;
+		engine.activeState.selectionBoxWidth = engine.w / 2 - 32;
+		engine.activeState.selectionBoxHeight = (engine.h - engine.activeState.currentProblem.crossY) / 2 - 32;
 		if(this.userChoice !== 0){
 			if(this.userChoice === this.targetAngle){
-				engine.gameState.numRight++;
-				engine.gameState.message = "You got the right answer";
-				engine.gameState.messageColor = "green";
-				engine.gameState.correctSound.play();
+				if(engine.activeState.numRight != null){ //this means we're in learning mode
+					engine.activeState.numRight++;
+				}
+				else if(engine.activeState.gameTimer != null){ //this means we're in time mode
+					engine.activeState.gameTimer += this.timeBonus;
+				}
+				engine.activeState.message = "You got the right answer";
+				engine.activeState.messageColor = "green";
+				engine.activeState.correctSound.play();
 			}
 			else{
-				engine.gameState.numWrong++;
-				engine.gameState.message = "You got the wrong answer";
-				engine.gameState.messageColor = "red";
-				engine.gameState.incorrectSound.play();
+				if(engine.activeState.numWrong != null){ //this means we're in learning mode
+					engine.activeState.numWrong++;
+				}
+				else if(engine.activeState.gameTimer != null){ //this means we're in time mode
+					engine.activeState.gameTimer -= this.timePenalty;
+				}
+				engine.activeState.message = "You got the wrong answer";
+				engine.activeState.messageColor = "red";
+				engine.activeState.incorrectSound.play();
+				engine.activeState.isScreenShaking = true;
 			}
 		}
-		engine.gameState.isDisplayingMessage = true;
+		engine.activeState.isDisplayingMessage = true;
 	}
 }

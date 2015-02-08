@@ -1,4 +1,4 @@
-var GameState = function(w, h)
+var TimeModeState = function(w, h)
 {
     this.w = w || 0;
     this.h = h || 0;
@@ -6,19 +6,15 @@ var GameState = function(w, h)
     this.running = true;
 	
 	this.isQuitting = false;
+	this.gameOver = false;
 	
 	this.correctSound = new Audio("./res/RightAnswerSound.wav");
 	this.incorrectSound = new Audio("./res/WrongAnswerSound.wav");
 	
 	this.currentChoice = 1; //integers are used to represent the choices for each problem
 	
-	this.numRight = 0; //the number of problems answered correctly
-	this.numRightX = 0; //the coordinates of the number right
-	this.numRightY = 0;
-	
-	this.numWrong = 0; //the number of problems answered incorrectly
-	this.numWrongX = 0; //the coordinates of the number wrong
-	this.numWrongY = 0;
+	this.gameTimer = 3000; //the initial number of milliseconds
+	this.scoreTimer = 0;
 	
 	this.isScreenShaking = false; //set this to true any time a screen shake should occur 
 	this.isScreenShakingEnd = false;
@@ -43,7 +39,7 @@ var GameState = function(w, h)
 	this.currentProblem = this.fitProblem; //used to keep track of the current problem
 }
 
-GameState.prototype =
+TimeModeState.prototype =
 {	
     init: function()
     {
@@ -66,44 +62,32 @@ GameState.prototype =
 		//code for displaying message after every choice made
         if(this.isDisplayingMessage){
             this.displayMessageTimer += dt;
-            if(this.displayMessageTimer >= 2000){ //how many milliseconds the message lasts
+            if(this.displayMessageTimer >= 500){ //how many milliseconds the message lasts
                 this.displayMessageTimer = 0;
                 this.isDisplayingMessage = false;
 				console.log("Stopped displaying message");
-				//create a new problem for the user to solve - should be randomly chosen
+				//create a new problem for the user to solve - randomize later
 				this.currentProblem = new IdentifyAngleProblem(0, 0);
             }
         }
+		if(this.gameTimer > 0 && !this.isDisplayingMessage && !this.isQuitting){
+			this.gameTimer -= dt;
+			this.scoreTimer += dt;
+		}
+		if(this.gameTimer <= 0){
+			this.gameTimer = 0;
+			Math.floor(this.scoreTimer);
+			this.gameOver = true;
+		}
     },
 
     keyPress: function(keyCode)
     {
-        switch(keyCode){
-            case 87: // 'w'
-				console.log("W pressed");
-				if(!this.isDisplayingMessage){
-					this.currentChoice = 1;
-					this.currentProblem.giveAnswer(this.currentChoice);
-				}
-                break;
-            case 83: // 's'
-                console.log("S pressed");
-				if(!this.isDisplayingMessage){
-					this.currentChoice = 2;
-					this.currentProblem.giveAnswer(this.currentChoice);
-				}
-                break;
-			case 68: // 'd'
-				console.log("D pressed");
-				if(!this.isDisplayingMessage){
-					this.currentChoice = 3;
-					this.currentProblem.giveAnswer(this.currentChoice);
-				}
-				break;
-				
+        switch(keyCode){				
 			case 49: // '1' key
 				if(!this.isDisplayingMessage){
 					this.currentChoice = 1;
+					console.log("Chose option 1");
 					this.currentProblem.giveAnswer(this.currentChoice);
 				}
 				break;
@@ -133,14 +117,24 @@ GameState.prototype =
 				console.log("Down pressed");
 				break;
 			case 27: // Escape key
-				if(!this.isDisplayingMessage){
+				if(!this.gameOver){ //prompt the user for quitting
 					this.isQuitting = !this.isQuitting;
+				}
+				else{ //quit to main menu
+					engine.activeState = engine.menuState;
 				}
 				console.log("Esc pressed");
 				break;
 			case 13: // Enter key
-				if(this.isQuitting){
+				if(this.isQuitting){ //go back to main menu
 					engine.activeState = engine.menuState;
+				}
+				else if(this.gameOver){
+					engine.timerState = new TimeModeState(this.w, this.h);
+					engine.activeState = engine.timerState;
+				}
+				else{ //go back to main menu
+					
 				}
 				break;
 		}
@@ -174,10 +168,7 @@ GameState.prototype =
 		
 		canvas.font = "24px sans-serif";
         canvas.textAlign = "center";
-		canvas.fillStyle = "red";
-		canvas.fillText("Incorrect: " + this.numWrong, engine.w - 64, 64);
-		canvas.fillStyle = "green";
-		canvas.fillText("Correct: " + this.numRight, 64, 64);
+		canvas.fillText("Time remaining: " + (this.gameTimer / 1000), engine.w / 2, 96);
 		
 		//this.fitProblem.draw(canvas); //test code
 		//this.angleProblem.draw(canvas);
@@ -199,6 +190,14 @@ GameState.prototype =
 			canvas.fillText("Are you sure you want to quit?", engine.w / 2, engine.h / 2 - 64);
 			canvas.fillText("Press Enter to confirm", engine.w / 2, engine.h / 2);
 			canvas.fillText("Press Esc again to cancel", engine.w / 2, engine.h / 2 + 64);
+		}
+		
+		if(this.gameOver){
+			canvas.clearRect(0, 0, this.w, this.h);
+			canvas.fillText("Time's up! You lasted for " + Math.round(this.scoreTimer / 1000) + " seconds!", engine.w / 2, engine.h / 2 - 96);
+			canvas.fillText("Do you want to try again?", engine.w / 2, engine.h / 2 - 68);
+			canvas.fillText("Press Enter to try again", engine.w / 2, engine.h - 228);
+			canvas.fillText("Press Esc to quit", engine.w / 2, engine.h - 164);
 		}
     }
 }
