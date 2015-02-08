@@ -123,15 +123,24 @@ TimeModeState.prototype =
 					this.isQuitting = !this.isQuitting;
 				}
 				else{ //quit to main menu
+					engine.menuState.menuTheme.play();
+					engine.menuState.timeTheme.pause();
+					engine.menuState.timeTheme.currentTime = 0;
 					engine.activeState = engine.menuState;
 				}
 				console.log("Esc pressed");
 				break;
 			case 13: // Enter key
 				if(this.isQuitting){ //go back to main menu
+					engine.menuState.menuTheme.play();
+					engine.menuState.timeTheme.pause();
+					engine.menuState.timeTheme.currentTime = 0;
 					engine.activeState = engine.menuState;
 				}
 				else if(this.gameOver){
+					engine.menuState.menuTheme.play();
+					engine.menuState.timeTheme.pause();
+					engine.menuState.timeTheme.currentTime = 0;
 					engine.timerState = new TimeModeState(this.w, this.h);
 					engine.activeState = engine.timerState;
 				}

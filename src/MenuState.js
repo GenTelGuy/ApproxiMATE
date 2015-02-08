@@ -10,7 +10,10 @@ var MenuState = function(w, h)
 	this.selectionBoxX = (this.w / 2) - (this.selectionBoxWidth / 2);
 	this.selectionBoxY = 280;
 	
-	//we may need a current-screen system where the MenuState.js file handles all different states
+	this.menuTheme = new Audio("res/RealMenu1.mp3");
+	this.learningTheme = new Audio("res/StdInGame.mp3");
+	this.timeTheme = new Audio("res/TimeAttack3.mp3");
+	this.menuTheme.play();
 }
 
 MenuState.prototype =
@@ -40,10 +43,16 @@ MenuState.prototype =
 				if(this.selectionBoxY === 280){ //if Learn Mode is currently selected, go to learn mode
 					engine.gameState = new GameState(this.w, this.h);
 					engine.activeState = engine.gameState;
+					this.menuTheme.pause();
+					this.menuTheme.currentTime = 0;
+					this.learningTheme.play();
 				}
 				else if(this.selectionBoxY === 380){ //if Time Mode is currently selected, go to time mode
 					engine.timerState = new TimeModeState(this.w, this.h);
 					engine.activeState = engine.timerState;
+					this.menuTheme.pause();
+					this.menuTheme.currentTime = 0;
+					this.timeTheme.play();
 				}
 				break;
 		}

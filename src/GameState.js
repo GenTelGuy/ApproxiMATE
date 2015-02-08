@@ -120,6 +120,9 @@ GameState.prototype =
 				break;
 			case 13: // Enter key
 				if(this.isQuitting){
+					engine.menuState.menuTheme.play();
+					engine.menuState.learningTheme.pause();
+					engine.menuState.learningTheme.currentTime = 0;
 					engine.activeState = engine.menuState;
 				}
 				break;
