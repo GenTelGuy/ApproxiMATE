@@ -23,6 +23,8 @@ var IdentifyAngleProblem = function(x, y)
 	this.choice2 = 0;
 	this.choice3 = 0;
 	
+	console.log(this.theta + "    " + this.targetAngle);
+	
 	switch(chooseValueBetween(1, 3)){
 	
 		case 1:
@@ -69,10 +71,7 @@ var IdentifyAngleProblem = function(x, y)
 
 var chooseValueBetween = function( min, max )//Chooses a random value between the min and the max, inclusive.
 {
-
-return( Math.floor(  Math.random() * (1 + min-max) + min  ) );
-
-
+	return( Math.floor(  Math.random() * (1 + min-max) + min  ) );
 }
 
 
@@ -106,6 +105,15 @@ IdentifyAngleProblem.prototype =
 		canvas.lineTo(angleX + Math.cos(this.theta  * Math.PI / 180) * this.length, angleY - Math.sin(this.theta  * Math.PI / 180) * this.length);
 		canvas.closePath();
 		canvas.stroke(); //draws an outline
+		
+		//draw the choices
+		var leftX = engine.w / 4;
+		var rightX = (engine.w / 4) * 3;
+		var upY = this.crossY + (engine.h - this.crossY) / 4;
+		var downY = this.crossY + (engine.h - this.crossY) / 4 * 3;
+		canvas.fillText(this.choice1, leftX, upY);
+		canvas.fillText(this.choice2, leftX, downY);
+		canvas.fillText(this.choice3, rightX, downY);
     },
 	
 	//Utility function so that the angle can be generated at any time by calling this function.
