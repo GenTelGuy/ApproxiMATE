@@ -15,6 +15,15 @@ HowManyFitProblem.prototype =
 
     draw: function(canvas)
     {
+		//test code for drawing polygons or paths
+		canvas.beginPath();
+		canvas.moveTo(0, 0); //the initial point
+		canvas.lineTo(100,50);
+		canvas.lineTo(50, 100);
+		canvas.lineTo(0, 90);
+		canvas.closePath();
+		canvas.stroke(); //draws an outline
+		
 		canvas.fillText("This is a how-many-fit problem", this.x, this.y);
     }
 }
