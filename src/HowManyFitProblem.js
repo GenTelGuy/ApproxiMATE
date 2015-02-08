@@ -159,7 +159,19 @@ var HowManyFitProblem = function(x, y)
 	this.choice2 = this.answerSet[1];
 	this.choice3 = this.answerSet[2];
 	this.choice4 = this.answerSet[3];
-	this.answer = this.currentDivision;
+	/*if(this.choice1 === this.currentDivision){
+		this.answer = this.choice1;
+	}
+	else if(this.choice2 === this.currentDivision){
+		this.answer = this.choice2;
+	}
+	else if(this.choice3 === this.currentDivision){
+		this.answer = this.choice3;
+	}
+	else if(this.choice4 === this.currentDivision){
+		this.answer = this.choice4;
+	}*/
+	//this.answer = this.currentDivision;
 	
 	console.log( "Ratio: " + this.targetShape.area / this.comparisonShape.area);
 }
@@ -179,7 +191,7 @@ var makeAnswers = function( rightAnswer, lowerLimit, upperLimit )
 			while( x === ret[0] || x === ret[1] || x === ret[2] || x === ret[3] ){
 				x = chooseValueBetween( lowerLimit, upperLimit );//Keep re-rolling until you get a value not already present
 			}
-		
+			ret[i] = x;
 		}
 	}
 	
@@ -233,6 +245,11 @@ HowManyFitProblem.prototype =
 		canvas.fillText("#2", 24 + (engine.w / 4), engine.h - this.bottomCrossY + 28);
 		canvas.fillText("#3", 24 + (engine.w / 4) * 2, engine.h - this.bottomCrossY + 28);
 		canvas.fillText("#4", 24 + (engine.w / 4) * 3, engine.h - this.bottomCrossY + 28);
+		
+		canvas.fillText(this.choice1, 1 * (engine.w / 8), engine.h - this.bottomCrossY * 0.5);
+		canvas.fillText(this.choice2, 3 * (engine.w / 8), engine.h - this.bottomCrossY * 0.5);
+		canvas.fillText(this.choice3, 5 * (engine.w / 8), engine.h - this.bottomCrossY * 0.5);
+		canvas.fillText(this.choice4, 7 * (engine.w / 8), engine.h - this.bottomCrossY * 0.5);
     },
 	
 	giveAnswer: function(answer){ //handles the selection and score tracking progression of the user
