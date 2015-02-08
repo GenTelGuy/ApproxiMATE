@@ -6,7 +6,7 @@ var HowManyFitProblem = function(x, y)
 	this.y = y;
 
 	this.minBigWidth = 160;
-	this.maxBigHeight = 150;//The dimension limits for the large shape. 
+	this.minBigHeight = 150;//The dimension limits for the large shape. 
 
 	
 	this.maxBigWidth = 320;
@@ -24,8 +24,149 @@ var HowManyFitProblem = function(x, y)
 	this.crossY = 128; //the top y-position of the cross drawn
 	this.bottomCrossY = 96; //the bottom y-position of the cros
 	
+	this.leftBoxCenterX = 200;//The positions of the box centers
+	this.leftBoxCenterY = 316;
+	
+	this.rightBoxCenterX = 600;
+	this.rightBoxCenterY = 316;
+	
 	this.minDivision = 2;//The small shape can be at most half of the 
 	this.maxDivision = 10;//It can't be smaller than a tenth of the size of the large shape.
+	this.currentDivision = chooseValueBetween( this.minDivision, this.maxDivision);
+	
+	
+	this.bigShapeType = "";//What kind of shape the large shape is
+	this.widthValue = chooseValueBetween(this.minBigWidth, this.maxBigWidth);
+	console.log("Width: " + this.widthValue);
+	this.heightValue = chooseValueBetween(this.minBigHeight, this.maxBigHeight);
+	console.log( "Height: " + this.heightValue);
+	this.area = this.widthValue * this.heightValue;
+	
+	
+	this.comparisonShapeArea = this.area/this.currentDivision;
+
+	
+	//choose between rectangle and triangle for the right side
+	switch(chooseValueBetween(1,2)){
+	
+		case 1://Rectangle
+			this.bigShapeType = "Rectangle";
+			this.targetShape = new Rectangle( this.widthValue, this.heightValue, this.rightBoxCenterX, this.rightBoxCenterY );
+			this.area = this.widthValue * this.heightValue;
+			this.comparisonShapeArea = this.area/this.currentDivision;
+			
+			
+			break;
+		case 2://Triangle
+		
+			this.bigShapeType = "Triangle";
+			this.targetShape = new Triangle( this.widthValue, this.heightValue, this.rightBoxCenterX, this.rightBoxCenterY );
+			this.area = this.widthValue * this.heightValue / 2;
+			this.comparisonShapeArea = this.area/this.currentDivision;
+		
+			break;
+			
+		default:
+			//Nothing, this case is not possible
+			
+			
+	}
+			
+	//Now we make the left side
+	switch(chooseValueBetween(1,2)){
+	
+		case 1://Rectangle
+		
+			if(this.bigShapeType === "Rectangle"){
+		
+				this.smallWidthFactor = chooseFloatBetween(1, Math.pow( this.currentDivision, 0.5 ));//Currently this doesn't vary between skinny and fat triangles, but it may in the future.
+				this.smallHeightFactor = this.currentDivision / this.smallWidthFactor;//THIS NEEDS TO BE CHANGED, base/10 * height/10 = area/100 not area/10
+				//smallWidthFactor and smallHeightFactor multiply to the value of currentDivision
+				
+				this.smallWidth =  this.widthValue / this.smallWidthFactor;
+				this.smallHeight = this.heightValue / this.smallHeightFactor;
+				
+				this.comparisonShape = new Rectangle(this.smallWidth, this.smallHeight, this.leftBoxCenterX, this.leftBoxCenterY);
+				
+				
+			}
+			
+			else{//The big shape was a triangle and this one is a rectangle
+			
+				//this part of the code may be incorrect
+				this.currentDivision *= Math.pow(2, 0.5);//Because A = 1/2BH, it will take half as many triangles to reach the same area as a triangle
+				
+				this.smallWidthFactor = chooseFloatBetween(1, Math.pow( this.currentDivision, 0.5));
+				console.log("smallWidthFactor: " + this.smallWidthFactor);
+				this.smallHeightFactor = this.currentDivision / this.smallWidthFactor;
+				console.log("smallHeightFactor: " + this.smallHeightFactor);
+				
+				this.smallWidth =  this.widthValue / this.smallWidthFactor;
+				this.smallHeight = this.heightValue / this.smallHeightFactor;
+				
+				this.comparisonShape = new Rectangle(this.smallWidth, this.smallHeight, this.leftBoxCenterX, this.leftBoxCenterY);
+			
+			
+			}
+		
+			break;
+		case 2://Triangle
+		
+			if(this.bigShapeType === "Rectangle"){
+				//this part of the code may be incorrect
+				this.currentDivision /= Math.pow(2, 0.5);//Because A = 1/2BH, it will take twice as many triangles to reach the same area by the old formula
+				
+				this.smallWidthFactor = chooseFloatBetween(1, Math.pow( this.currentDivision, 0.5));
+				this.smallHeightFactor = this.currentDivision / this.smallWidthFactor;
+				
+				
+				this.smallWidth =  this.widthValue / this.smallWidthFactor;
+				this.smallHeight = this.heightValue / this.smallHeightFactor;
+				
+				this.comparisonShape = new Triangle(this.smallWidth, this.smallHeight, this.leftBoxCenterX, this.leftBoxCenterY);
+			
+			}
+			
+			else{//Both are triangles
+			
+				this.smallWidthFactor = chooseFloatBetween(1, Math.pow( this.currentDivision, 0.5));
+				this.smallHeightFactor = this.currentDivision / this.smallWidthFactor;
+				
+				this.smallWidth =  this.widthValue / this.smallWidthFactor;
+				this.smallHeight = this.heightValue / this.smallHeightFactor;
+				
+				this.comparisonShape = new Triangle(this.smallWidth, this.smallHeight, this.leftBoxCenterX, this.leftBoxCenterY);
+			
+			
+			}
+		
+			break;
+		
+		
+		default:
+		
+		//Not possible
+		
+		
+	
+	}
+	
+	console.log( "Ratio: " + this.targetShape.area / this.comparisonShape.area);
+}
+
+var chooseValueBetween = function( min, max )//Chooses a random value between the min and the max, inclusive.
+{
+
+	return( Math.floor(  Math.random() * (1 + max-min) + min  ) );
+
+
+}
+
+var chooseFloatBetween = function( min, max )//Chooses a random float between the min and the max
+{
+	return( Math.random(max-min) + min );
+
+
 }
 
 HowManyFitProblem.prototype =
@@ -49,6 +190,9 @@ HowManyFitProblem.prototype =
 		canvas.fillRect(0, engine.h - 1, engine.w, 1);
 		canvas.fillRect(0, this.crossY, engine.w, 1);
 		canvas.fillRect(0, engine.h - this.bottomCrossY, engine.w, 1); //horizontal line
+		
+		this.comparisonShape.drawFilled( canvas );
+		this.targetShape.drawFilled( canvas );
     },
 	
 	giveAnswer: function(answer){ //handles the selection and score tracking progression of the user

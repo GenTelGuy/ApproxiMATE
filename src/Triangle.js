@@ -1,10 +1,9 @@
-
-var Rectangle = function(width, height, centerX, centerY){
+var Triangle = function(width, height, centerX, centerY){
 
 	this.width = width;
 	this.height = height;
 	this.centerX = centerX;
-	this.centerY = centerY;//The position and dimensions of the rectangle
+	this.centerY = centerY;//The position and dimensions of the triangle
 	
 	this.area = this.width * this.height;
 	
@@ -15,7 +14,7 @@ var Rectangle = function(width, height, centerX, centerY){
 }
 
 
-Rectangle.prototype = 
+Triangle.prototype = 
 {
 
 	update: function(dt)
@@ -26,7 +25,7 @@ Rectangle.prototype =
 	draw: function( canvas )
 	{
 	
-		var topY = this.centerY - this.height/2;//Determines the positions of the rectangle's edges
+		var topY = this.centerY - this.height/2;//Determines the positions of the triangle's edges
 		var bottomY = this.centerY + this.height/2;
 		
 		var leftX = this.centerX - this.width/2;
@@ -36,10 +35,9 @@ Rectangle.prototype =
 		//This draws it on screen
 		canvas.strokeStyle = "black";
 		canvas.beginPath();
-		canvas.moveTo(leftX, topY); //the initial point
-		canvas.lineTo(rightX, topY);
-		canvas.lineTo(rightX, bottomY);
-		canvas.lineTo( leftX, bottomY);
+		canvas.moveTo(this.centerX, topY); //the top point
+		canvas.lineTo(rightX, bottomY);//The bottom right point
+		canvas.lineTo(leftX, bottomY);//The bottom felt point
 		canvas.closePath();
 		canvas.stroke(); //draws an outline
 		
@@ -50,7 +48,7 @@ Rectangle.prototype =
 	drawFilled: function( canvas )
 	{
 	
-		var topY = this.centerY - this.height/2;//Determines the positions of the rectangle's edges
+		var topY = this.centerY - this.height/2;//Determines the positions of the triangle's edges
 		var bottomY = this.centerY + this.height/2;
 		
 		var leftX = this.centerX - this.width/2;
@@ -60,10 +58,9 @@ Rectangle.prototype =
 		//This draws it on screen
 		canvas.strokeStyle = "black";
 		canvas.beginPath();
-		canvas.moveTo(leftX, topY); //the initial point
-		canvas.lineTo(rightX, topY);
-		canvas.lineTo(rightX, bottomY);
-		canvas.lineTo( leftX, bottomY);
+		canvas.moveTo(this.centerX, topY); //the top point
+		canvas.lineTo(rightX, bottomY);//The bottom right point
+		canvas.lineTo(leftX, bottomY);//The bottom felt point
 		canvas.closePath();
 		canvas.fill(); //draws an outline
 		
