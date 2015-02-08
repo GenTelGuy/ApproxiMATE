@@ -72,8 +72,14 @@ GameState.prototype =
                 this.displayMessageTimer = 0;
                 this.isDisplayingMessage = false;
 				console.log("Stopped displaying message");
-				//create a new problem for the user to solve - should be randomly chosen
-				this.currentProblem = new IdentifyAngleProblem(0, 0);
+				//create a new problem for the user to solve
+				var probChoice = Math.floor((Math.random() * 2) + 1);
+				if(probChoice === 1){
+					this.currentProblem = new IdentifyAngleProblem(0, 0);
+				}
+				else if(probChoice === 2){
+					this.currentProblem = new HowManyFitProblem(0, 0);
+				}
             }
         }
     },
