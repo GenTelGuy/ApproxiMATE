@@ -24,11 +24,15 @@ var GameState = function(w, h)
 	this.transX = 0; //keeps track of the canvas's translation in order to reset it to its original position after screen shaking
 	this.transY = 0;
 	
+	this.isDisplayingMessage = false;
+	this.displayMessageTimer = 0;
+	this.message = "";
+	
 	this.fitProblem = new HowManyFitProblem(100, 100); //test code
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
 	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
 	
-	this.currentProblem = null; //used to keep track of the current problem
+	this.currentProblem = this.angleProblem; //used to keep track of the current problem
 }
 
 GameState.prototype =
@@ -50,6 +54,18 @@ GameState.prototype =
                 this.isScreenShakingEnd = true;
             }
         }
+		
+		//code for displaying message after every choice made
+        if(this.isDisplayingMessage){
+            this.displayMessageTimer += dt;
+            if(this.displayMessageTimer >= 2000){ //how many milliseconds the message lasts
+                this.displayMessageTimer = 0;
+                this.isDisplayingMessage = false;
+				console.log("Stopped displaying message");
+				//create a new problem for the user to solve
+				this.currentProblem = new IdentifyAngleProblem(0, 0);
+            }
+        }
     },
 
     keyPress: function(keyCode)
@@ -57,15 +73,24 @@ GameState.prototype =
         switch(keyCode){
             case 87: // 'w'
 				console.log("W pressed");
-				this.currentChoice = 1;
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 1;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
                 break;
             case 83: // 's'
                 console.log("S pressed");
-				this.currentChoice = 2;
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 2;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
                 break;
 			case 68: // 'd'
 				console.log("D pressed");
-				this.currentChoice = 3;
+				if(!this.isDisplayingMessage){
+					this.currentChoice = 3;
+					this.currentProblem.giveAnswer(this.currentChoice);
+				}
 				break;
 				
 			case 38: // Up arrow
@@ -81,9 +106,6 @@ GameState.prototype =
 			case 13: // Enter key
 				if(this.isQuitting){
 					engine.activeState = engine.menuState;
-				}
-				else{
-					
 				}
 				break;
 		}
@@ -118,13 +140,21 @@ GameState.prototype =
 		canvas.font = "24px sans-serif";
         canvas.textAlign = "center";
 		canvas.fillStyle = "red";
-		canvas.fillText(this.numWrong, engine.w - 64, 64);
+		canvas.fillText("Incorrect: " + this.numWrong, engine.w - 64, 64);
 		canvas.fillStyle = "green";
-		canvas.fillText(this.numRight, 64, 64);
+		canvas.fillText("Correct: " + this.numRight, 64, 64);
 		
 		//this.fitProblem.draw(canvas); //test code
-		this.angleProblem.draw(canvas);
+		//this.angleProblem.draw(canvas);
 		//this.perimeterProblem.draw(canvas);
+		if(this.currentProblem != null){
+			this.currentProblem.draw(canvas);
+		}
+		
+		//Screen shaking effect
+		if(this.isDisplayingMessage){
+			canvas.fillText(this.message, engine.w / 2, engine.h / 2);
+		}
 		
 		if(this.isQuitting){
 			canvas.fillText("Are you sure you\nwant to quit?", engine.w / 2, engine.h / 2);
