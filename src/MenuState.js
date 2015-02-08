@@ -5,8 +5,7 @@ var MenuState = function(w, h)
 
     this.running = true;
 	
-	this.testProblem = new ExampleProblem(250, 250); //test code
-	this.fitProblem = new HowManyFitProblem(100, 100);
+	this.fitProblem = new HowManyFitProblem(100, 100); //test code
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
 	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
 	
@@ -42,11 +41,9 @@ MenuState.prototype =
     {
         canvas.clearRect(0, 0, this.w, this.h);
 		
-		//this.testProblem.draw(canvas); //test code
-		//this.fitProblem.draw(canvas);
+		//this.fitProblem.draw(canvas); //test code
 		this.angleProblem.draw(canvas);
 		//this.perimeterProblem.draw(canvas);
-		canvas.fillText("Testing, testing", 50, 50); //testing code - remove later
     },
 
 }

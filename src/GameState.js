@@ -102,6 +102,5 @@ GameState.prototype =
 	
         canvas.clearRect(0, 0, this.w, this.h);
         //all drawing should happen after canvas is cleared
-		canvas.fillText("test", 0, 0); //TODO gamestate drawing isn't working
     }
 }

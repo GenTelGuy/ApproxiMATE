@@ -22,7 +22,10 @@ IdentifyAngleProblem.prototype =
     {
 		canvas.fillRect(engine.w / 2, this.crossY, 1, engine.h); //vertical line
 		canvas.fillRect(0, (this.crossY + engine.h) / 2, engine.w, 1); //horizontal line
-		canvas.fillText("This is an identify-angle problem", this.x, this.y);
+		
+        canvas.font = '24px sans-serif';
+        canvas.textAlign = 'center';
+		canvas.fillText("Identify the angle!", engine.w / 2, 64);
 		
 		//draws the generated angle
 		var angleX = (engine.w / 2) + (this.length + 12);
