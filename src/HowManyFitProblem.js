@@ -97,7 +97,7 @@ var HowManyFitProblem = function(x, y)
 			else{//The big shape was a triangle and this one is a rectangle
 			
 				//this part of the code may be incorrect
-				this.currentDivision *= Math.pow(2, 0.5);//Because A = 1/2BH, it will take half as many triangles to reach the same area as a triangle
+				//this.currentDivision *= Math.pow(2, 0.5);//Because A = 1/2BH, it will take half as many triangles to reach the same area as a triangle
 				
 				this.smallWidthFactor = chooseFloatBetween(1, Math.pow( this.currentDivision, 0.5));
 				console.log("smallWidthFactor: " + this.smallWidthFactor);
@@ -105,7 +105,7 @@ var HowManyFitProblem = function(x, y)
 				console.log("smallHeightFactor: " + this.smallHeightFactor);
 				
 				this.smallWidth =  this.widthValue / this.smallWidthFactor;
-				this.smallHeight = this.heightValue / this.smallHeightFactor;
+				this.smallHeight = 0.5 * this.heightValue / this.smallHeightFactor;
 				
 				this.comparisonShape = new Rectangle(this.smallWidth, this.smallHeight, this.leftBoxCenterX, this.leftBoxCenterY);
 			
@@ -126,7 +126,7 @@ var HowManyFitProblem = function(x, y)
 				this.smallWidth =  this.widthValue / this.smallWidthFactor;
 				this.smallHeight = this.heightValue / this.smallHeightFactor;
 				
-				this.comparisonShape = new Triangle(this.smallWidth, this.smallHeight, this.leftBoxCenterX, this.leftBoxCenterY);
+				this.comparisonShape = new Triangle(this.smallWidth, this.smallHeight * Math.pow(2, 0.5), this.leftBoxCenterX, this.leftBoxCenterY);
 			
 			}
 			
