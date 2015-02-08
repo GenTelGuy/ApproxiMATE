@@ -5,11 +5,6 @@ var IdentifyAngleProblem = function(x, y)
     this.x = x;
 	this.y = y;
 	
-	
-	this.theta = Math.floor((Math.random() * 360) + 1); 
-	this.length = 76; //the length of the rays that make up the angle
-	
-	this.crossY = 128; //the top y-position of the cross drawn
 	this.minimumAngle = 16;//One degree is the minimum that the angle can be
 	this.maximumAngle = 344;//One less than 360 degrees. It is likely that these numbers need adjustment.
 	
@@ -30,8 +25,8 @@ var IdentifyAngleProblem = function(x, y)
 			this.choice1 = this.targetAngle;
 			
 			//Set the other two answers to other, incorrect angles
-			this.choice2 = this.generateWrongAnswer( this.targetAngle );
-			this.choice3 = this.generateWrongAnswer2( this.targetAngle, this.choice2 );
+			this.choice2 = generateWrongAnswer( targetAngle );
+			this.choice3 = generateWrongAnswer( targetAngle, choice2 );
 			
 			
 			break;
@@ -42,8 +37,8 @@ var IdentifyAngleProblem = function(x, y)
 			
 			//Set the other two answers to other, incorrect angles
 			
-			this.choice1 = this.generateWrongAnswer( this.targetAngle );
-			this.choice3 = this.generateWrongAnswer2( this.targetAngle, this.choice1 );
+			this.choice1 = generateWrongAnswer( targetAngle );
+			this.choice3 = generateWrongAnswer( targetAngle, choice1 );
 		
 		
 			break;
@@ -55,8 +50,8 @@ var IdentifyAngleProblem = function(x, y)
 			//Set the other two answers to other, incorrect angles
 			
 			
-			this.choice1 = this.generateWrongAnswer( this.targetAngle );
-			this.choice2 = this.generateWrongAnswer2( this.targetAngle, this.choice1 );
+			this.choice1 = generateWrongAnswer( targetAngle );
+			this.choice2 = generateWrongAnswer( targetAngle, choice1 );
 			
 			break;
 			
@@ -65,7 +60,71 @@ var IdentifyAngleProblem = function(x, y)
 }
 
 
+var generateWrongAnswer = function( correctAnswer ) //Minimum difference is the minimum difference between the correct angle and an incorrect angle.
+{
 
+	switch( chooseValueBetween(1, 2) ){
+	
+		case 1://Go low
+		
+		
+			this.ret = chooseValueBetween( correctAnswer - this.maximumDifference, correctAnswer - this.minimumDifference ) ;
+			
+			if(this.ret > this.max){
+			
+			this.ret = this.max;
+			}
+			
+			if(this.ret < this.min) {
+			
+			this.ret = this.min
+			};
+			
+			return this.ret;
+			
+			
+			break;
+		
+		case 2://Go high 
+		
+			this.ret =  chooseValueBetween( correctAnswer + this.minimumDifference, correctAnswer + this.maximumDifference ) ;
+			if(this.ret > this.max){//Make sure you don't go too high or too low
+			
+				this.ret = this.max;
+			}
+			
+			if(this.ret < this.min) {//^^
+			
+				this.ret = this.min
+			};
+		
+			return this.ret;
+			break;
+		
+		default: // do nothing, this one never happens
+	
+	}
+	
+	
+
+
+
+}
+
+var generateWrongAnswer = function( correctAnswer, alreadyUsedWrongAnswer ) //Overloaded function, avoids two of the wrong answers being the same
+{
+
+	this.ret = generateWrongAnswer( correctAnswer );
+	
+	while( Math.abs(this.ret - alreadyUsedWrongAnswer) < minimumDifference ){//If the first generated value was too close to the other answer, try again until it is acceptable.
+	
+		this.ret = generateWrongAnswer( correctAnswer );
+	
+	}
+
+	return this.ret;
+
+}
 
 var chooseValueBetween = function( min, max )//Chooses a random value between the min and the max, inclusive.
 {
@@ -86,7 +145,10 @@ IdentifyAngleProblem.prototype =
 
     draw: function(canvas)
     {
-		//console.log(this.length); << old debug code
+<<<<<<< HEAD
+		canvas.fillText("This is an identify-angle problem", this.x, this.y);
+    }
+=======
 		canvas.fillStyle = "black";
 		canvas.fillRect(engine.w / 2, this.crossY, 1, engine.h); //vertical line
 		canvas.fillRect(0, (this.crossY + engine.h) / 2, engine.w, 1); //horizontal line
@@ -94,7 +156,6 @@ IdentifyAngleProblem.prototype =
         canvas.font = '24px sans-serif';
         canvas.textAlign = 'center';
 		canvas.fillText("Identify the angle!", engine.w / 2, 64);
-    
 		
 		//draws the generated angle
 		var angleX = (engine.w / 2) + (this.length + 12);
@@ -111,68 +172,6 @@ IdentifyAngleProblem.prototype =
 	//Utility function so that the angle can be generated at any time by calling this function.
 	generateAngle: function(){
 		this.theta = Math.floor((Math.random() * 360) + 1);
-	},
-	
-	generateWrongAnswer: function( rightAnswer ){
-	
-			switch( chooseValueBetween(1, 2) ){
-		
-			case 1://Go low
-			
-			
-				this.ret = chooseValueBetween( rightAnswer - this.maximumDifference, rightAnswer - this.minimumDifference ) ;
-				
-				if(this.ret > this.max){
-				
-				this.ret = this.max;
-				}
-				
-				if(this.ret < this.min) {
-				
-				this.ret = this.min
-				};
-				
-				return this.ret;
-				
-				
-				break;
-			
-			case 2://Go high 
-			
-				this.ret =  chooseValueBetween( rightAnswer + this.minimumDifference, rightAnswer + this.maximumDifference ) ;
-				if(this.ret > this.max){//Make sure you don't go too high or too low
-				
-					this.ret = this.max;
-				}
-				
-				if(this.ret < this.min) {//^^
-				
-					this.ret = this.min
-				};
-			
-				return this.ret;
-				break;
-			
-			default: // do nothing, this one never happens
-		
-		}
-	
-	
-	
-	},
-	
-	generateWrongAnswer2: function( rightAnswer, alreadyUsedWrongAnswer){
-	
-			
-		this.ret = this.generateWrongAnswer( rightAnswer );
-		
-		if( this.ret === alreadyUsedWrongAnswer ){//If the first generated value was too close to the other answer, try again until it is acceptable.
-		
-			this.ret += 1;
-		
-		}
-
-		return this.ret;
-		
 	}
+>>>>>>> 8cd2c25f153bc5d1d74e5738d0301f9362d8e70a
 }
