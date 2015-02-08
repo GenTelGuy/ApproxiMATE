@@ -5,10 +5,6 @@ var MenuState = function(w, h)
 
     this.running = true;
 	
-	this.fitProblem = new HowManyFitProblem(100, 100); //test code
-	this.angleProblem = new IdentifyAngleProblem(500, 500);
-	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
-	
 	//we may need a current-screen system where the MenuState.js file handles all different states
 }
 
@@ -40,10 +36,6 @@ MenuState.prototype =
     draw: function(canvas)
     {
         canvas.clearRect(0, 0, this.w, this.h);
-		
-		//this.fitProblem.draw(canvas); //test code
-		this.angleProblem.draw(canvas);
-		//this.perimeterProblem.draw(canvas);
     },
 
 }

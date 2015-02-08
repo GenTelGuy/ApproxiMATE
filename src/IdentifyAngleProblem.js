@@ -20,6 +20,7 @@ IdentifyAngleProblem.prototype =
 
     draw: function(canvas)
     {
+		canvas.fillStyle = "black";
 		canvas.fillRect(engine.w / 2, this.crossY, 1, engine.h); //vertical line
 		canvas.fillRect(0, (this.crossY + engine.h) / 2, engine.w, 1); //horizontal line
 		

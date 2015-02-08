@@ -19,6 +19,10 @@ var GameState = function(w, h)
 	this.shakeMagnitude = 12; //how far away the camera shakes around its original point, in pixels
 	this.transX = 0; //keeps track of the canvas's translation in order to reset it to its original position after screen shaking
 	this.transY = 0;
+	
+	this.fitProblem = new HowManyFitProblem(100, 100); //test code
+	this.angleProblem = new IdentifyAngleProblem(500, 500);
+	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
 }
 
 GameState.prototype =
@@ -64,18 +68,6 @@ GameState.prototype =
 		}
 	},
 
-    /*giveResources: function(resources)
-    {
-        this.desertBackground = resources.bgDesert;
-        this.finalDestinationBackground = resources.bgFinalD;
-        this.grottoBackground = resources.bgGrotto;
-		this.peaksBackground = resources.bgPeaks;
-        this.activeBackground = this.desertBackground;
-
-        this.player1.giveResources(resources);
-        this.player2.giveResources(resources);
-    },*/
-
     // Functions for starting and stopping the simulation
     start: function() { this.running = true },
     pause: function() { this.running = false },
@@ -101,6 +93,16 @@ GameState.prototype =
 		}
 	
         canvas.clearRect(0, 0, this.w, this.h);
-        //all drawing should happen after canvas is cleared
+		
+		canvas.font = "24px sans-serif";
+        canvas.textAlign = "center";
+		canvas.fillStyle = "red";
+		canvas.fillText(this.numWrong, engine.w - 64, 64);
+		canvas.fillStyle = "green";
+		canvas.fillText(this.numRight, 64, 64);
+		
+		//this.fitProblem.draw(canvas); //test code
+		this.angleProblem.draw(canvas);
+		//this.perimeterProblem.draw(canvas);
     }
 }
