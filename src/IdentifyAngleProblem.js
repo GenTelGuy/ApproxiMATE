@@ -14,9 +14,10 @@ var IdentifyAngleProblem = function(x, y)
 	this.maximumAngle = 344;//One less than 360 degrees. It is likely that these numbers need adjustment.
 	
 	this.minimumDifference = 15; //There can be a minimum of 15 degrees between two angles
-	this.maximumDifference = 90; //There can be a maximum of 90 degrees between two angles 
+	this.maximumDifference = 40; //There can be a maximum of 90 degrees between two angles 
 	
-	this.targetAngle = Math.floor(Math.random() * (this.maximum-this.minimum) + this.minimum);
+	this.targetAngle = chooseValueBetween(this.minimumAngle, this.maximumAngle);
+	console.log("this.targetAngle: " + this.targetAngle);
 	//This line sets the angle that the user tries to identify
 	
 	this.choice1 = 0;
@@ -69,8 +70,8 @@ var IdentifyAngleProblem = function(x, y)
 
 var chooseValueBetween = function( min, max )//Chooses a random value between the min and the max, inclusive.
 {
-
-return( Math.floor(  Math.random() * (1 + min-max) + min  ) );
+console.log( min + " " + max + " " + Math.floor(  Math.random() * (1 + max-min) + min  ) );
+return( Math.floor(  Math.random() * (1 + max-min) + min  ) );
 
 
 }
@@ -103,7 +104,7 @@ IdentifyAngleProblem.prototype =
 		canvas.moveTo(angleX, angleY); //the initial point
 		canvas.lineTo(angleX + this.length, angleY);
 		canvas.lineTo(angleX, angleY);
-		canvas.lineTo(angleX + Math.cos(this.theta  * Math.PI / 180) * this.length, angleY - Math.sin(this.theta  * Math.PI / 180) * this.length);
+		canvas.lineTo(angleX + Math.cos(this.targetAngle  * Math.PI / 180) * this.length, angleY - Math.sin(this.targetAngle  * Math.PI / 180) * this.length);
 		canvas.closePath();
 		canvas.stroke(); //draws an outline
     },
@@ -114,6 +115,8 @@ IdentifyAngleProblem.prototype =
 	},
 	
 	generateWrongAnswer: function( rightAnswer ){
+	
+			console.log( "rightAnswer: " + rightAnswer );
 	
 			switch( chooseValueBetween(1, 2) ){
 		
@@ -131,7 +134,7 @@ IdentifyAngleProblem.prototype =
 				
 				this.ret = this.min
 				};
-				
+				console.log( "Wrong answer: " + this.ret );
 				return this.ret;
 				
 				
@@ -149,7 +152,8 @@ IdentifyAngleProblem.prototype =
 				
 					this.ret = this.min
 				};
-			
+				
+				console.log( "Wrong answer: " + this.ret);
 				return this.ret;
 				break;
 			
