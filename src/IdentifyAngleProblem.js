@@ -14,7 +14,7 @@ var IdentifyAngleProblem = function(x, y)
 	this.maximumAngle = 344;//One less than 360 degrees. It is likely that these numbers need adjustment.
 	
 	this.minimumDifference = 15; //There can be a minimum of 15 degrees between two angles
-	this.maximumDifference = 40; //There can be a maximum of 90 degrees between two angles 
+	this.maximumDifference = 35; //There can be a maximum of 90 degrees between two angles 
 	
 	this.targetAngle = chooseValueBetween(this.minimumAngle, this.maximumAngle);
 	console.log("this.targetAngle: " + this.targetAngle);
@@ -136,14 +136,14 @@ IdentifyAngleProblem.prototype =
 			
 				this.ret = chooseValueBetween( rightAnswer - this.maximumDifference, rightAnswer - this.minimumDifference ) ;
 				
-				if(this.ret > this.max){
+				if(this.ret > this.maximumAngle && this.targetAngle != this.maximumAngle){
 				
-				this.ret = this.max;
+				this.ret = this.maximumAngle;
 				}
 				
-				if(this.ret < this.min) {
+				if(this.ret < this.minimumAngle && this.targetAngle != this.minimumAngle) {
 				
-				this.ret = this.min
+				this.ret = this.minimumAngle
 				};
 				console.log( "Wrong answer: " + this.ret );
 				return this.ret;
@@ -154,14 +154,14 @@ IdentifyAngleProblem.prototype =
 			case 2://Go high 
 			
 				this.ret =  chooseValueBetween( rightAnswer + this.minimumDifference, rightAnswer + this.maximumDifference ) ;
-				if(this.ret > this.max){//Make sure you don't go too high or too low
+				if(this.ret > this.maximumAngle){//Make sure you don't go too high or too low
 				
-					this.ret = this.max;
+					this.ret = this.maximumAngle;
 				}
 				
-				if(this.ret < this.min) {//^^
+				if(this.ret < this.minimumAngle) {//^^
 				
-					this.ret = this.min
+					this.ret = this.minimumAngle
 				};
 				
 				console.log( "Wrong answer: " + this.ret);
@@ -181,9 +181,9 @@ IdentifyAngleProblem.prototype =
 			
 		this.ret = this.generateWrongAnswer( rightAnswer );
 		
-		if( this.ret === alreadyUsedWrongAnswer ){//If the first generated value was too close to the other answer, try again until it is acceptable.
+		while( Math.abs(this.ret - alreadyUsedWrongAnswer) <= this.minimumDifference  || this.ret < this.minimumAngle){//If the first generated value was too close to the other answer, try again until it is acceptable.
 		
-			this.ret += 1;
+			this.ret = this.generateWrongAnswer(rightAnswer);
 		
 		}
 
