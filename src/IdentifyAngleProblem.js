@@ -101,6 +101,7 @@ IdentifyAngleProblem.prototype =
     
 		
 		//draws the generated angle
+		canvas.strokeStyle = "black";
 		var angleX = (engine.w / 2) + (this.length + 12);
 		var angleY = (this.crossY + engine.h) / 2 - (this.length + 12);
 		canvas.beginPath();
@@ -192,23 +193,31 @@ IdentifyAngleProblem.prototype =
 		
 	},
 	
-	giveAnswer: function(answer){
+	giveAnswer: function(answer){ //handles the selection and score tracking progression of the user
 		if(answer === 1){
 			this.userChoice = this.choice1;
+			engine.gameState.selectionBoxX = 10;
+			engine.gameState.selectionBoxY = this.crossY + 10;
 		}
 		else if(answer == 2){
 			this.userChoice = this.choice2;
+			engine.gameState.selectionBoxX = 10;
+			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
 		}
 		else if(answer === 3){
 			this.userChoice = this.choice3;
+			engine.gameState.selectionBoxX = engine.w / 2 + 10;
+			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
 		}
 		if(this.userChoice === this.targetAngle){
 			engine.gameState.numRight++;
 			engine.gameState.message = "You got the right answer";
+			engine.gameState.messageColor = "green";
 		}
 		else{
 			engine.gameState.numWrong++;
 			engine.gameState.message = "You got the wrong answer";
+			engine.gameState.messageColor = "red";
 		}
 		engine.gameState.isDisplayingMessage = true;
 	}
