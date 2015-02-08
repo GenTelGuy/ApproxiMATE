@@ -7,6 +7,9 @@ var GameState = function(w, h)
 	
 	this.isQuitting = false;
 	
+	this.correctSound = new Audio("./res/RightAnswerSound.wav");
+	this.incorrectSound = new Audio("./res/WrongAnswerSound.wav");
+	
 	this.currentChoice = 1; //integers are used to represent the choices for each problem
 	
 	this.numRight = 0; //the number of problems answered correctly
@@ -37,7 +40,7 @@ var GameState = function(w, h)
 	this.angleProblem = new IdentifyAngleProblem(500, 500);
 	this.perimeterProblem = new MatchPerimeterProblem(320, 240);
 	
-	this.currentProblem = this.perimeterProblem; //used to keep track of the current problem
+	this.currentProblem = this.fitProblem; //used to keep track of the current problem
 }
 
 GameState.prototype =

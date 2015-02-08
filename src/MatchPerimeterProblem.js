@@ -65,11 +65,13 @@ MatchPerimeterProblem.prototype =
 				engine.gameState.numRight++;
 				engine.gameState.message = "You got the right answer";
 				engine.gameState.messageColor = "green";
+				engine.gameState.correctSound.play();
 			}
 			else{
 				engine.gameState.numWrong++;
 				engine.gameState.message = "You got the wrong answer";
 				engine.gameState.messageColor = "red";
+				engine.gameState.incorrectSound.play();
 			}
 		}
 		engine.gameState.isDisplayingMessage = true;
