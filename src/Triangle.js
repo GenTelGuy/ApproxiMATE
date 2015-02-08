@@ -5,7 +5,7 @@ var Triangle = function(width, height, centerX, centerY){
 	this.centerX = centerX;
 	this.centerY = centerY;//The position and dimensions of the triangle
 	
-	this.area = this.width * this.height;
+	this.area = this.width * this.height / 2;
 	
 	this.perimeter = this.width * 2 + this.height * 2;
 
