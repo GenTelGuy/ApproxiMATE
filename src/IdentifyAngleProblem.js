@@ -209,15 +209,22 @@ IdentifyAngleProblem.prototype =
 			engine.gameState.selectionBoxX = engine.w / 2 + 10;
 			engine.gameState.selectionBoxY = this.crossY + (engine.h - this.crossY) / 2 + 10;
 		}
-		if(this.userChoice === this.targetAngle){
-			engine.gameState.numRight++;
-			engine.gameState.message = "You got the right answer";
-			engine.gameState.messageColor = "green";
+		else if(answer === 4){
+			return; //identify angle problems do not have a 4th option
 		}
-		else{
-			engine.gameState.numWrong++;
-			engine.gameState.message = "You got the wrong answer";
-			engine.gameState.messageColor = "red";
+		engine.gameState.selectionBoxWidth = engine.w / 2 - 32;
+		engine.gameState.selectionBoxHeight = (engine.h - engine.gameState.currentProblem.crossY) / 2 - 32;
+		if(this.userChoice !== 0){
+			if(this.userChoice === this.targetAngle){
+				engine.gameState.numRight++;
+				engine.gameState.message = "You got the right answer";
+				engine.gameState.messageColor = "green";
+			}
+			else{
+				engine.gameState.numWrong++;
+				engine.gameState.message = "You got the wrong answer";
+				engine.gameState.messageColor = "red";
+			}
 		}
 		engine.gameState.isDisplayingMessage = true;
 	}
