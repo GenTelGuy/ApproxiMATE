@@ -42,10 +42,10 @@ MenuState.prototype =
     {
         canvas.clearRect(0, 0, this.w, this.h);
 		
-		this.testProblem.draw(canvas); //test code
-		this.fitProblem.draw(canvas);
+		//this.testProblem.draw(canvas); //test code
+		//this.fitProblem.draw(canvas);
 		this.angleProblem.draw(canvas);
-		this.perimeterProblem.draw(canvas);
+		//this.perimeterProblem.draw(canvas);
 		canvas.fillText("Testing, testing", 50, 50); //testing code - remove later
     },
 
