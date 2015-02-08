@@ -70,7 +70,7 @@ GameState.prototype =
                 this.displayMessageTimer = 0;
                 this.isDisplayingMessage = false;
 				console.log("Stopped displaying message");
-				//create a new problem for the user to solve
+				//create a new problem for the user to solve - should be randomly chosen
 				this.currentProblem = new IdentifyAngleProblem(0, 0);
             }
         }
@@ -133,7 +133,9 @@ GameState.prototype =
 				console.log("Down pressed");
 				break;
 			case 27: // Escape key
-				this.isQuitting = !this.isQuitting;
+				if(!this.isDisplayingMessage){
+					this.isQuitting = !this.isQuitting;
+				}
 				console.log("Esc pressed");
 				break;
 			case 13: // Enter key
